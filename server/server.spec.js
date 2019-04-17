@@ -16,7 +16,7 @@ describe('Testing Router', () => {
 
   beforeAll( () => {
     server = http.createServer(app);
-    server.lister(3000);
+    server.listen(3000);
   });
 
   afterAll( () => {
