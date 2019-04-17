@@ -39,5 +39,16 @@ describe('Testing Router', () => {
     });
 
     // GET 500
+    it('500', done => {
+      const data = [{ id: 1 }];
+      spyOn(Pins, 'find').and.callFake( callBack => {
+        callBack(true, data);
+      });
+
+      request.get('http://localhost:3000/api', (error, response, body) => {
+        expect(response.statusCode).toBe(500);
+        done();
+      })
+    });
   });
 })
