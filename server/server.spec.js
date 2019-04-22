@@ -51,4 +51,33 @@ describe('Testing Router', () => {
       })
     });
   });
+
+  describe('GET BY ID', () => {
+    // GET 200 By ID
+    it('500 and find by id pin', done => {
+      const data = { id: 1};
+      spyOn(Pins, 'findById').and.callFake( (id, callBack) => {
+        data.param = id;
+        callBack(true, data);
+    });
+
+    request.get('http://localhost:3000/api/1', (error, response, body) => {
+      expect(response.statusCode).toBe(500);
+      done();
+    });
+  });
+
+    // GET 500 By Id
+    it('500', done => {
+      const data = [{ id: 1 }];
+      spyOn(Pins, 'find').and.callFake( callBack => {
+        callBack(true, data);
+    });
+
+    request.get('http://localhost:3000/api', (error, response, body) => {
+      expect(response.statusCode).toBe(500);
+      done();
+    });
+  });
+  });
 })
