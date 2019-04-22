@@ -145,4 +145,19 @@ describe('Testing Router', () => {
       })
     });
   });
+
+  describe('DELETE', () => {
+    // GET 200
+    it('200 and delete PIN', done => {
+      const data = { id: 1 };
+      spyOn(Pins, 'findByIdAndRemove').and.callFake( (id, body, callBack) => {
+        callBack(false, data);
+      });
+
+      request.delete('http://localhost:3000/api/' + data.id, (error, response, body) => {
+        expect(response.statusCode).toBe(200);
+        done();
+      })
+    });
+  });
 });
