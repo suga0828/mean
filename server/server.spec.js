@@ -4,6 +4,8 @@ const http = require('http');
 const PinsRouter = require('./routes/pins');
 const Pins = require('./models/Pins');
 const request = require('request');
+var requestPromise = require('request-promise-native');
+const axios = require('axios');
 const app = express();
 
 app.use(logger('dev'));
@@ -80,4 +82,50 @@ describe('Testing Router', () => {
     });
   });
   });
-})
+
+  describe('POST', () => {
+    // GET 200
+    it('200', done => {
+      const post = [{
+        title: 'Platzi: Cursos online profesionales de tecnología',
+        author: 'Platzi',
+        description: 'Aprende desde cero a crear el futuro de la web. Cursos de Desarrollo, Diseño, Marketing, y Negocios.',
+        percentage: 0,
+        tags: [],
+        assets: []
+      }];
+      
+      spyOn(Pins, 'create').and.callFake( (pin, callBack) => {
+        callBack(false, post);
+      });
+
+      spyOn(requestPromise, 'get').and.returnValue(
+        //- No estamos probando este caso aún.
+        Promise.resolve('.')
+      );
+      
+      const assets = [{ url: 'https:platzi.com' }];
+
+      //- El segundo parámetro es falso.
+      axios.post('http://localhost:3000/api', {title: 'title', author: 'author', description: 'description', assets})
+        .then( res => {
+          expect(res.status).toBe(200);
+          expect(res.data).toEqual(post);
+          done();
+        });
+    });
+
+    // GET 500
+    // it('500', done => {
+    //   const data = [{ id: 1 }];
+    //   spyOn(Pins, 'find').and.callFake( callBack => {
+    //     callBack(true, data);
+    //   });
+
+    //   request.get('http://localhost:3000/api', (error, response, body) => {
+    //     expect(response.statusCode).toBe(500);
+    //     done();
+    //   })
+    // });
+  });
+});
