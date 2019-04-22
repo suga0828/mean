@@ -84,7 +84,7 @@ describe('Testing Router', () => {
   });
 
   describe('POST', () => {
-    // GET 200
+    // POST 200
     it('200', done => {
       const post = [{
         title: 'Platzi: Cursos online profesionales de tecnología',
@@ -115,17 +115,34 @@ describe('Testing Router', () => {
         });
     });
 
-    // GET 500
-    // it('500', done => {
-    //   const data = [{ id: 1 }];
-    //   spyOn(Pins, 'find').and.callFake( callBack => {
-    //     callBack(true, data);
-    //   });
+    it('200 PDF', done => {      
+      spyOn(Pins, 'create').and.callFake( (pin, callBack) => {
+        callBack(false, {});
+      });
 
-    //   request.get('http://localhost:3000/api', (error, response, body) => {
-    //     expect(response.statusCode).toBe(500);
-    //     done();
-    //   })
-    // });
+      const assets = [{ url: 'https:platzi.pdf' }];
+
+      //- El segundo parámetro es falso.
+      axios.post('http://localhost:3000/api', {title: 'title', author: 'author', description: 'description', assets})
+        .then( res => {
+          expect(res.status).toBe(200);
+          done();
+        });
+    });
+  });
+
+  describe('PUT', () => {
+    // GET 200
+    it('200 and update PIN', done => {
+      const data = { id: 1 };
+      spyOn(Pins, 'findByIdAndUpdate').and.callFake( (id, body, callBack) => {
+        callBack(false, data);
+      });
+
+      request.put('http://localhost:3000/api/' + data.id, (error, response, body) => {
+        expect(response.statusCode).toBe(200);
+        done();
+      })
+    });
   });
 });
