@@ -41,3 +41,4 @@ Thumbs.db
 
 # Test Report
 spec/istanbul
+/.nyc_output
