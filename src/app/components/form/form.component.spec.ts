@@ -77,4 +77,16 @@ fdescribe('FormComponent', () => {
       expect(Object.keys(assets.controls)).toEqual(['0', '1']);
     });
   });
+
+  describe('When deleteAssets', () => {
+    it('Should remove the form control', () => {
+      const assets = <FormArray>component.secondFormGroup.get('assets');
+
+      component.addAsset();
+      component.deleteAsset(0);
+
+      console.log(Object.keys(assets.controls));
+      expect(Object.keys(assets.controls)).toEqual([]);
+    })
+  });
 });
