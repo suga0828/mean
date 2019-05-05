@@ -7,5 +7,10 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class MenuComponent {
   @Output() clicked = new EventEmitter<boolean>();
+
+  counter = 0;
   
+  incrementar() {
+    this.counter++;
+  }
 }
